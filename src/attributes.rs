@@ -12,7 +12,7 @@ use crate::Result;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub(crate) struct NodeAttributes {
     /// The name of the node.
-    #[serde(rename = "n")]
+    #[serde(rename = "n", default)]
     pub name: String,
     /// The encoded fingerprint for the node.
     #[serde(rename = "c", skip_serializing_if = "Option::is_none")]

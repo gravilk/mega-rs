@@ -522,7 +522,7 @@ pub struct FetchNodesResponse {
     #[serde(rename = "f")]
     pub nodes: Vec<FileNode>,
     /// Additional metadata for the nodes.
-    #[serde(rename = "ok")]
+    #[serde(rename = "ok0")]
     pub ok: Option<Vec<FileMetadata>>,
     /// Additional metadata for the nodes.
     #[serde(rename = "s")]

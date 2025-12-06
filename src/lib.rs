@@ -441,6 +441,11 @@ impl Client {
                     break 'result None;
                 };
 
+                // Check if any of the fields are empty strings
+                if day.is_empty() || month.is_empty() || year.is_empty() {
+                    break 'result None;
+                }
+
                 let day: u32 = {
                     let decoded = BASE64_URL_SAFE_NO_PAD.decode(&day)?;
                     String::from_utf8(decoded)?.parse::<u32>()?
