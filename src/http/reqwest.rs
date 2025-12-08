@@ -161,7 +161,12 @@ impl HttpClient for reqwest::Client {
                 if let Some(challenge) = response.headers().get("X-Hashcash") {
                     if let Ok(challenge_str) = challenge.to_str() {
                         tracing::debug!("Received hashcash challenge: {}", challenge_str);
-                        if let Some(solution) = solve_hashcash(challenge_str) {
+                        // stolen straight from https://github.com/cth-latest/mega-rs/commit/718fcd524a0edf44e48fe3f16afcd82aa47477f1
+                        // i didnt know his fork existed before i wrote mine, so if you are reading this you should probably use his, because i think it's better
+                        if let Some(solution) = tokio::task::spawn_blocking({
+                            let challenge_str = challenge_str.to_string().clone();
+                            move || solve_hashcash(challenge_str.as_str())
+                        }).await.expect("hashcash worker panicked") {
                             tracing::debug!("Hashcash solved, retrying with solution");
                             hashcash_header = Some(solution);
                             continue;
